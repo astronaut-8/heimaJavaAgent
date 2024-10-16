@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.sjc</groupId>
-  <artifactId>agentDemo1</artifactId>
+  <artifactId>easy-arthas</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>jar</packaging>
 
@@ -27,6 +27,18 @@
       <artifactId>jd-core</artifactId>
       <version>1.1.3</version>
     </dependency>
+    <!-- https://mvnrepository.com/artifact/org.ow2.asm/asm -->
+    <dependency>
+      <groupId>org.ow2.asm</groupId>
+      <artifactId>asm</artifactId>
+      <version>9.3</version>
+    </dependency>
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+      <version>2.11.0</version> <!-- 你可以选择最新版本 -->
+    </dependency>
+
   </dependencies>
 
   <build>

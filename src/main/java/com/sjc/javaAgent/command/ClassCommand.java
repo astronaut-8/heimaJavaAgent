@@ -1,5 +1,6 @@
 package com.sjc.javaAgent.command;
 
+import com.sjc.javaAgent.enhancer.AsmEnhancer;
 import org.jd.core.v1.ClassFileToJavaSourceDecompiler;
 import org.jd.core.v1.api.loader.Loader;
 import org.jd.core.v1.api.loader.LoaderException;
@@ -136,5 +137,39 @@ public class ClassCommand {
 
         decompiler.decompile(loader, printer, className);
 
+    }
+
+    public static void enhanceClass (Instrumentation inst) {
+        System.out.println("请输入类名: ");
+        //输入类名
+        Scanner scanner = new Scanner(System.in);
+        String className = scanner.next();
+
+        //根据类名找到class对象
+        Class[] allLoadedClasses = inst.getAllLoadedClasses();
+        for (Class allLoadedClass : allLoadedClasses) {
+            if (allLoadedClass.getName().equals(className)) {
+                //添加转换器
+                ClassFileTransformer classFileTransformer = new ClassFileTransformer() {
+                    // 类的转换器本来可以增强类信息，这边是起获取到类的字节码信息的功能
+                    @Override
+                    public byte[] transform(ClassLoader loader, String className, Class<?> classBeingRedefined, ProtectionDomain protectionDomain, byte[] classfileBuffer) throws IllegalClassFormatException {
+                       //通过asm对类进行增强，返回字节码信息
+                        return AsmEnhancer.enhanceCLass(classfileBuffer);
+                    }
+                };
+                inst.addTransformer(classFileTransformer , true);
+
+                // 触发转换器
+                try {
+                    inst.retransformClasses(allLoadedClass);
+                } catch (UnmodifiableClassException e) {
+                    throw new RuntimeException(e);
+                }finally {
+                    //删除转换器
+                    inst.removeTransformer(classFileTransformer);
+                }
+            }
+        }
     }
 }
