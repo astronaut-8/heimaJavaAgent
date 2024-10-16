@@ -1,6 +1,7 @@
 package com.sjc.javaAgent;
 
-import com.sjc.javaAgent.command.MemoryCommand;
+
+import com.sjc.javaAgent.command.ThreadCommend;
 
 import java.lang.instrument.Instrumentation;
 
@@ -18,6 +19,7 @@ public class AgentMain {
     //agentmain
     public static void agentmain(String agentArgs, Instrumentation inst) {
         //MemoryCommand.printMemory();
-        MemoryCommand.heapDump();
+        //MemoryCommand.heapDump();
+        ThreadCommend.printThreadInfo();
     }
 }
